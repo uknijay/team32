@@ -5,7 +5,7 @@ suits = ["Hearts","Diamonds","Spades","Clubs"]
 cards = list(product(values,suits))
 random.shuffle(cards)
 
-game_state
+game_state = []
 
 def get_card(n):
     hand = []
@@ -18,4 +18,4 @@ def print_hand(hand):
         print(f"{value} of {suit}")
         
 def turn():
-    
+    return
