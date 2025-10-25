@@ -8,6 +8,10 @@ class Strategy(Player, ABC):
         super().__init__(name, money)
         
     @abstractmethod
+    def addCount(value):
+        pass
+        
+    @abstractmethod
     def calcBet():
         pass
     

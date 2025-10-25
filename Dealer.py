@@ -8,5 +8,12 @@ class Dealer(Strategy):
     def calcBet():
         pass
     
-    def decide_move():
-        pass
+    def decide_move(self):
+        v = 0
+        for card in self.hand:
+            v+=self.value(card)
+        
+        if v<17:
+            self.hit()
+        else:
+            self.stand()
