@@ -7,8 +7,10 @@ class Strategy(Player, ABC):
     def __init__(self, name, money):
         super().__init__(name, money)
         
+    @abstractmethod
     def calcBelt():
         pass
     
+    @abstractmethod
     def decide_move():
         pass
