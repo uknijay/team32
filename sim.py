@@ -17,7 +17,7 @@ class Game:
         self.cards = self.shuffle()
 
         # Now create players and dealer who rely on game.cards
-        self.players = [Hi_Opt_II(name, money, self) for name, money in player_data]
+        self.players = [WongHalves(name, money, self) for name, money in player_data]
         self.dealer = Dealer("Dealer", 0, self)
         self.game_state = []
         
