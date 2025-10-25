@@ -19,7 +19,6 @@ class WongHalves(Strategy):
             11: -1.0,
         }
         self.count = 0
-        self.game = game
     
 
 
@@ -29,23 +28,27 @@ class WongHalves(Strategy):
 
     def stake(self):
         self.betRamp = {
-            0: self.game.minStake,
-            1: self.game.minStake * 2,
-            2: self.game.minStake * 4,
-            3: self.game.minStake * 8,
-            4: self.game.minStake * 12,
+            0: self.game.minStake,         # 15
+            1: self.game.minStake * 2,     # 30
+            2: self.game.minStake * 3,     # 45
+            3: self.game.minStake * 4,     # 60
+            4: self.game.minStake * 5,     # 75
+            5: self.game.minStake * 6,     # 90, optional max cap
         }
 
-        true_count = (self.count / (len(self.game.cards) / 52)).__floor__()
-        if true_count <= 0:
-            self.bet = self.game.minStake
-        elif true_count > 0:
-            if true_count in self.betRamp:
-                self.bet = self.betRamp[true_count]
-            else:
-                self.bet = self.game.minStake * 12
+        true_count = self.count / (len(self.game.cards) / 52)
 
-        self.money -= self.bet
+        if true_count <= 0:
+            bet = self.game.minStake
+        else:
+            bet = self.betRamp.get(true_count, self.game.minStake * 12)
+
+        # ensure bet is at least minStake, and at most 20% of bankroll
+        bet = max(self.game.minStake, min(bet, self.money // 5))
+
+        self.bet = bet
+
+
         
 
     def decide_move(self):
@@ -57,7 +60,10 @@ class WongHalves(Strategy):
         elif action == 'S':
             self.stand()
         elif action == 'D':
-            self.double()
+            if self.money>self.bet*2:
+                self.double()
+            else:
+                self.hit()
     
 
             
