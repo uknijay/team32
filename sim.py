@@ -9,17 +9,18 @@ class Game:
         
         self.rank = ["Ace", 2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King"]
         self.suits = ["Hearts", "Diamonds", "Spades", "Clubs"]
-        self.cards = list(product(self.rank, self.suits))
-        random.shuffle(self.cards)
-
         
         self.players = [HiLo(name, balance) for name, balance in player_data]
         self.dealer = Dealer("Dealer", 0)
         self.game_state = []
         
         self.deckCount = deckcount
-        self.minStake = minStake         
+        self.minStake = minStake       
         
+        self.cards = self.shuffle()  
+        
+    def shuffle(self):
+        return random.shuffle(self.deckcount*list(product(self.rank, self.suits)))
         
     def value(self, card):
         rank = card[0]
@@ -29,7 +30,20 @@ class Game:
             return 11
         else:
             return 10
-
+        
+    def hand_value(self):
+        v = 0
+        for card in self.hand:
+            v += game.value(card)
+        if v<=21:
+            return v
+        else:
+            for card in self.hand:
+                if card[0] == "Ace":
+                    card[0] = 1
+                    return v - 10
+            return 0
+            
     def get_card(self, n):
         drawn = []
         for _ in range(n):
@@ -40,11 +54,23 @@ class Game:
         return drawn
     
     def new_turn(self):
+        if len(self.cards) < self.deckCount*52*0.25:
+            for player in self.players:
+                player.count = 0
+                 
         for player in self.players:
             player.stake()
+            
         for player in self.players:
             player.hand = self.get_card(2)
+            
         self.dealer.hand = self.get_card(1)
+        
+        for player in self.players:
+            player.decide_move()
+            
+        self.dealer.game.get_card(1)
+        self.dealer.decide_move()
 
 
 if __name__ == "__main__":
