@@ -103,9 +103,9 @@ class Player(ABC):
         self.hand.extend(drawn)
     
     @abstractmethod
-    def stake():
+    def stake(self):
         pass
     
     @abstractmethod
-    def decide_move():
+    def decide_move(self):
         pass

@@ -5,13 +5,13 @@ class Dealer(Strategy):
     def __init__(self, name, money,game):
         super().__init__(name, money, game)
         
-    def calcBet():
+    def calcBet(self):
         pass
     
-    def stake():
+    def stake(self):
         pass
     
-    def addCount(value):
+    def addCount(self, value):
         return
     
     def decide_move(self):

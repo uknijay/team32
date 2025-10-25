@@ -12,7 +12,7 @@ class Strategy(Player, ABC):
         pass
     
     @abstractmethod
-    def decide_move():
+    def decide_move(self):
         pass
     
 class HiLo(Strategy):

@@ -2,7 +2,7 @@ import random
 from itertools import product
 from Dealer import Dealer
 from wong_halves import WongHalves
-
+from Hi_opt_II import Hi_Opt_II
 
 class Game:
     def __init__(self, player_data,deckCount,minStake):
@@ -10,15 +10,16 @@ class Game:
         self.playing = True
         self.rank = ["Ace", 2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King"]
         self.suits = ["Hearts", "Diamonds", "Spades", "Clubs"]
-        
-        self.players = [WongHalves(name, money, self) for name, money in player_data]
-        self.dealer = Dealer("Dealer", 0,self)
-        self.game_state = []
-        
+
+        # Initialize deck configuration and shuffle before creating players
         self.deckCount = deckCount
-        self.minStake = minStake       
-        
-        self.cards = self.shuffle()  
+        self.minStake = minStake
+        self.cards = self.shuffle()
+
+        # Now create players and dealer who rely on game.cards
+        self.players = [Hi_Opt_II(name, money, self) for name, money in player_data]
+        self.dealer = Dealer("Dealer", 0, self)
+        self.game_state = []
         
     def shuffle(self):
         c = [list(card) for _ in range(self.deckCount) for card in product(self.rank, self.suits)]
