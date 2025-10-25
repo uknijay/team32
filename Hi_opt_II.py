@@ -41,7 +41,19 @@ class Hi_Opt_II(Strategy):
         elif self.true_count_bet > 3:
             bet = 12
         # apply bet to player state if needed
+        bet*=self.game.minStake
         self.bet = bet
 
     def decide_move(self):
-        return
+        total = self.hand_value()
+        dealer = self.game.value(self.game.dealer.hand[0])   
+        action = self.map[total][dealer]
+        if action == 'H':
+            self.hit()
+        elif action == 'S':
+            self.stand()
+        elif action == 'D':
+            if self.money>self.bet*2:
+                self.double()
+            else:
+                self.hit()

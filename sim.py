@@ -73,6 +73,7 @@ class Game:
             player.hand = []
             player.stake()
             print(f"{player.name} staked {player.bet}")
+            player.money - player.bet
         
             
         for player in self.players:
@@ -100,7 +101,7 @@ if __name__ == "__main__":
         ("Dave", 1000),
         ("John", 1000)
     ],6,15)
-    for i in range(10000):
+    for i in range(100):
         if game.playing:
             game.new_turn()
             print(f"Game: {i}")

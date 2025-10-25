@@ -59,6 +59,7 @@ class Player(ABC):
     def double(self):
         if len(self.hand) <= 2:
             print(f"{self.name}: Double!")
+            self.money - self.bet
             self.bet *= 2
             print(f"{self.name}: Doubled their bet to {self.bet}")
         self.hit()

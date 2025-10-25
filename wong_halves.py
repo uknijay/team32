@@ -19,7 +19,6 @@ class WongHalves(Strategy):
             11: -1.0,
         }
         self.count = 0
-        self.game = game
     
 
 
@@ -48,7 +47,6 @@ class WongHalves(Strategy):
         bet = max(self.game.minStake, min(bet, self.money // 5))
 
         self.bet = bet
-        self.money - bet
 
 
         
