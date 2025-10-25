@@ -58,12 +58,14 @@ class Player(ABC):
         print(f"{self.name}: Stand!")
     
     def double(self):
-        if len(self.hand) <= 2 and self.money>self.bet*2:
+        if len(self.hand) <= 2 and self.money>self.bet:
             print(f"{self.name}: Double!")
             self.money -= self.bet
             self.bet *= 2
             print(f"{self.name}: Doubled their bet to {self.bet}")
-        self.hit()
+            self.get_card(1)
+        else:
+            self.hit()
     
     def leave(self):
         print(f"{self.name} left the table")

@@ -14,16 +14,3 @@ class Strategy(Player, ABC):
     @abstractmethod
     def decide_move(self):
         pass
-    
-class HiLo(Strategy):
-    def __init__(self, name, money):
-        super().__init__(name, money)
-           
-    def decide_move():
-        pass
-    
-    def addCount(self,value):
-        pass
-    
-    def stake():
-        pass
