@@ -11,7 +11,7 @@ class Game:
         self.suits = ["Hearts", "Diamonds", "Spades", "Clubs"]
         
         self.players = [WongHalves(name, money, self) for name, money in player_data]
-        self.dealer = Dealer("Dealer", 0)
+        self.dealer = Dealer("Dealer", 0,self)
         self.game_state = []
         
         self.deckCount = deckCount
@@ -33,14 +33,7 @@ class Game:
         else:
             return 10
             
-    def get_card(self, n):
-        drawn = []
-        for _ in range(n):
-            card = self.cards.pop()
-            for player in self.players:
-                player.addCount(self.value(card))
-            drawn.append(card)
-        return drawn
+    
     
     # def end_turn(self):
     #     for player in self.players:
@@ -56,14 +49,14 @@ class Game:
             player.stake()
             
         for player in self.players:
-            player.hand = self.get_card(2)
+            player.get_card(2)
             
-        self.dealer.hand = self.get_card(1)
+        self.dealer.get_card(1)
         
         for player in self.players:
             player.decide_move()
             
-        self.dealer.game.get_card(1)
+        self.dealer.get_card(1)
         self.dealer.decide_move()
 
 

@@ -50,7 +50,6 @@ class WongHalves(Strategy):
         total = self.hand_value()
         dealer = self.game.value(self.game.dealer.hand[0])   
         action = self.map[total][dealer]
-        print(action)
         if action == 'H':
             self.hit()
         elif action == 'S':
