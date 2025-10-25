@@ -44,6 +44,8 @@ class WongHalves(Strategy):
                 self.bet = self.betRamp[true_count]
             else:
                 self.bet = self.game.minStake * 12
+
+        self.money -= self.bet
         
 
     def decide_move(self):

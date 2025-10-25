@@ -16,7 +16,7 @@ class Game:
         self.cards = self.shuffle()
 
         # Now create players and dealer who rely on game.cards
-        self.players = [Hi_Opt_II(name, money, self) for name, money in player_data]
+        self.players = [WongHalves(name, money, self) for name, money in player_data]
         self.dealer = Dealer("Dealer", 0, self)
         self.game_state = []
         
@@ -90,7 +90,7 @@ if __name__ == "__main__":
         ("Dave", 500),
         ("John", 500)
     ],6,15)
-    for i in range(10):
+    for i in range(100):
         game.new_turn()
         print(f"Game: {i}")
     
