@@ -3,16 +3,12 @@ from Player import Player
 
 class Strategy(Player, ABC):
     
-    def __init__(self, name, money):
+    def __init__(self, name, money, game):
         self.count = 0
-        super().__init__(name, money)
+        super().__init__(name, money, game)
         
     @abstractmethod
     def addCount(self,value):
-        pass
-        
-    @abstractmethod
-    def calcBet():
         pass
     
     @abstractmethod

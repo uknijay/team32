@@ -1,13 +1,11 @@
 from Strategy import Strategy
-from sim import cards
-from sim import Game
 
 
 class WongHalves(Strategy):
 
 
-    def __init__(self,game:Game):
-        super().__init__("Wong Halves",game)
+    def __init__(self,name,money,game):
+        super().__init__(name,money,game)
         self.tags = {
             2:  +0.5,
             3:  +1.0,
@@ -29,7 +27,7 @@ class WongHalves(Strategy):
         self.count += self.tags[value]
 
 
-    def calcBet(self):
+    def stake(self):
         self.betRamp = {
             0: self.game.minStake,
             1: self.game.minStake * 2,
@@ -38,21 +36,20 @@ class WongHalves(Strategy):
             4: self.game.minStake * 12,
         }
 
-        true_count = (self.count / (len(cards) / 52)).__floor__()
+        true_count = (self.count / (len(self.game.cards) / 52)).__floor__()
         if true_count <= 0:
-            bet_amount = self.game.minStake
+            self.bet = self.game.minStake
         elif true_count > 0:
             if true_count in self.betRamp:
-                bet_amount = self.betRamp[true_count]
+                self.bet = self.betRamp[true_count]
             else:
-                bet_amount = self.game.minStake * 12
-            
-        self.place_bet(bet_amount)
+                self.bet = self.game.minStake * 12
+        
 
     def decide_move(self):
-        total = self.game.hand_value()
-        dealer = self.game.dealer.hand[0][0]    
-        action = self.strategy_map[(total, False, dealer)]
+        total = self.hand_value()
+        dealer = self.game.value(self.game.dealer.hand[0])   
+        action = self.map[total][dealer]
         print(action)
         if action == 'H':
             self.hit()

@@ -2,25 +2,27 @@ import random
 from itertools import product
 from Dealer import Dealer
 from Strategy import HiLo  
-
+from wong_halves import WongHalves
 
 class Game:
-    def __init__(self, player_data,deckcount,minStake):
+    def __init__(self, player_data,deckCount,minStake):
         
         self.rank = ["Ace", 2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King"]
         self.suits = ["Hearts", "Diamonds", "Spades", "Clubs"]
         
-        self.players = [HiLo(name, balance) for name, balance in player_data]
+        self.players = [WongHalves(name, money, self) for name, money in player_data]
         self.dealer = Dealer("Dealer", 0)
         self.game_state = []
         
-        self.deckCount = deckcount
+        self.deckCount = deckCount
         self.minStake = minStake       
         
         self.cards = self.shuffle()  
         
     def shuffle(self):
-        return random.shuffle(self.deckcount*list(product(self.rank, self.suits)))
+        c = [list(card) for _ in range(self.deckCount) for card in product(self.rank, self.suits)]
+        random.shuffle(c)
+        return c
         
     def value(self, card):
         rank = card[0]
@@ -30,19 +32,6 @@ class Game:
             return 11
         else:
             return 10
-        
-    def hand_value(self):
-        v = 0
-        for card in self.hand:
-            v += game.value(card)
-        if v<=21:
-            return v
-        else:
-            for card in self.hand:
-                if card[0] == "Ace":
-                    card[0] = 1
-                    return v - 10
-            return 0
             
     def get_card(self, n):
         drawn = []
@@ -52,6 +41,11 @@ class Game:
                 player.addCount(self.value(card))
             drawn.append(card)
         return drawn
+    
+    # def end_turn(self):
+    #     for player in self.players:
+    #         if player.game.hand_value() > self.dealer.
+            
     
     def new_turn(self):
         if len(self.cards) < self.deckCount*52*0.25:

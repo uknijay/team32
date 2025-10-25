@@ -44,14 +44,15 @@ class Player(ABC):
     
     def hit(self):
         self.hand.extend(self.game.get_card(1))
-        if self.game.hand_value()<21:
+        v = self.hand_value()
+        if v<21 and v!=0:
             self.decide_move()
     
-    def stand():
+    def stand(self):
         pass
     
     def double(self):
-        bet *= 2
+        self.bet *= 2
         self.hit()
     
     def leave(self):
@@ -60,6 +61,19 @@ class Player(ABC):
         print(f"{self.name}'s hand:")
         for value,suit in self.hand:
             print(f"{value} of {suit}")
+            
+    def hand_value(self):
+        v = 0
+        for card in self.hand:
+            v += self.game.value(card)
+        if v<=21:
+            return v
+        else:
+            for card in self.hand:
+                if card[0] == "Ace":
+                    card[0] = 1
+                    return v - 10
+            return 0
     
     @abstractmethod
     def stake():

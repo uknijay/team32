@@ -3,7 +3,7 @@ from Strategy import Strategy
 
 class Dealer(Strategy):
     def __init__(self, name, money):
-        super().__init__(name, money)
+        super().__init__(self,name, money)
         
     def calcBet():
         pass
