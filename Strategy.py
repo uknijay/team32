@@ -2,13 +2,13 @@ from abc import ABC, abstractmethod
 from Player import Player
 
 class Strategy(Player, ABC):
-    count = 0
     
     def __init__(self, name, money):
+        self.count = 0
         super().__init__(name, money)
         
     @abstractmethod
-    def addCount(value):
+    def addCount(self,value):
         pass
         
     @abstractmethod
@@ -27,4 +27,7 @@ class HiLo(Strategy):
         return
     
     def decide_move():
+        pass
+    
+    def addCount(self,value):
         pass

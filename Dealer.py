@@ -8,6 +8,9 @@ class Dealer(Strategy):
     def calcBet():
         pass
     
+    def addCount(value):
+        return
+    
     def decide_move(self):
         v = 0
         for card in self.hand:
