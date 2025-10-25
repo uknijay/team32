@@ -26,19 +26,23 @@ class Hi_Opt_II(Strategy):
             self.ace_count += 1
 
     def calc_true_count(self):
-        (self.count + ((self.total_ace * ((self.total_cards - len(self.game.cards)) / self.total_cards))- self.ace_count))
+        self.true_count_bet = (self.count + ((self.total_ace * ((self.total_cards - len(self.game.cards)) / self.total_cards))- self.ace_count))
 
     def stake(self):
+        self.calc_true_count()
         if self.true_count_bet <= 0:
-            bet = 1
+            bet = 1           # 1 × minStake
         elif self.true_count_bet == 1:
-            bet = 2
+            bet = 1
         elif self.true_count_bet == 2:
-            bet = 4
+            bet = 2
         elif self.true_count_bet == 3:
-            bet = 8
-        elif self.true_count_bet > 3:
-            bet = 12
+            bet = 3
+        elif self.true_count_bet == 4:
+            bet = 4
+        else:  # TC >= 5
+            bet = 5
+
         
         bet*=self.game.minStake
         bet = max(self.game.minStake, min(bet, self.money // 5))
@@ -53,7 +57,4 @@ class Hi_Opt_II(Strategy):
         elif action == 'S':
             self.stand()
         elif action == 'D':
-            if self.money>self.bet*2:
-                self.double()
-            else:
-                self.hit()
+            self.double()

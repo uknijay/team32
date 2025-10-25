@@ -59,10 +59,7 @@ class WongHalves(Strategy):
         elif action == 'S':
             self.stand()
         elif action == 'D':
-            if self.money>self.bet*2:
-                self.double()
-            else:
-                self.hit()
+            self.double()
     
 
             

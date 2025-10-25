@@ -16,7 +16,6 @@ class Dealer(Strategy):
     
     def decide_move(self):
         v = 0
-        for card in self.hand:
-            v+=self.game.value(card)
+        v = self.hand_value()
         if v<17:
             self.hit()

@@ -13,6 +13,7 @@ class Player(ABC):
         self.game = game
         self.bust = False
         self.wins = 0
+        self.games = 0
         self.map = {
             # --- Lowest possible total ---
             4:  {2:'H',3:'H',4:'H',5:'H',6:'H',7:'H',8:'H',9:'H',10:'H','A':'H',11:'H'},
@@ -57,9 +58,9 @@ class Player(ABC):
         print(f"{self.name}: Stand!")
     
     def double(self):
-        if len(self.hand) <= 2:
+        if len(self.hand) <= 2 and self.money>self.bet*2:
             print(f"{self.name}: Double!")
-            self.money - self.bet
+            self.money -= self.bet
             self.bet *= 2
             print(f"{self.name}: Doubled their bet to {self.bet}")
         self.hit()
@@ -67,6 +68,7 @@ class Player(ABC):
     def leave(self):
         print(f"{self.name} left the table")
         self.game.players.remove(self)
+        
     def print_card(self,card):
         print(f"{card[0]} of {card[1]}")
             

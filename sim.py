@@ -17,7 +17,8 @@ class Game:
         self.cards = self.shuffle()
 
         # Now create players and dealer who rely on game.cards
-        self.players = [WongHalves(name, money, self) for name, money in player_data]
+        self.players = [Hi_Opt_II(name, money, self) for name, money in player_data]
+        self.startingPlayers = self.players.copy()
         self.dealer = Dealer("Dealer", 0, self)
         self.game_state = []
         
@@ -39,6 +40,7 @@ class Game:
     
     def end_turn(self):
         for player in self.players:
+            player.games += 1
             if player.hand_value() > self.dealer.hand_value():
                 player.money += player.bet*2
                 player.wins +=1
@@ -48,10 +50,12 @@ class Game:
                 print(f"{player.name} tied")
             else:
                 print(f"{player.name} lost £{player.bet}")
-                player.money -= player.bet
-                if player.money <game.minStake:
-                    print()
-                    end_game()
+                if player.money < self.minStake:
+                    print(f"{player.name} went broke!")
+                    self.players.remove(player)
+                    print(self.players)
+                    if len(self.players)==0:
+                        end_game()
             print(f"{player.name} has £{player.money}")
                 
         for player in self.players:
@@ -92,8 +96,8 @@ class Game:
             
         
 def end_game():
-    for player in game.players:
-        print(f"{player.name}: final moneys {player.money}, wins: {player.wins}")
+    for player in game.startingPlayers:
+        print(f"{player.name}: final moneys {player.money}, wins: {player.wins} out of {player.games} games")
     game.playing = False
 
 if __name__ == "__main__":
@@ -101,7 +105,7 @@ if __name__ == "__main__":
         ("Dave", 1000),
         ("John", 1000)
     ],6,15)
-    for i in range(100):
+    for i in range(1000):
         if game.playing:
             game.new_turn()
             print(f"Game: {i}")
