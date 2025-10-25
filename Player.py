@@ -10,6 +10,7 @@ class Player(ABC):
         self.name = name
         self.money = money
     
+    
     def fold():
         pass
     
@@ -30,3 +31,14 @@ class Player(ABC):
     
     def leave():
         pass
+    
+    def value(card):
+        # card = (value,suit) e.g (King, Heart)
+        if isinstance(card[0], int):
+            return card[0]
+        
+        elif card == "Ace":
+            return 11
+        
+        else:
+            return 10
