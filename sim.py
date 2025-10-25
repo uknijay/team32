@@ -3,9 +3,11 @@ from itertools import product
 from Dealer import Dealer
 from wong_halves import WongHalves
 
+
 class Game:
     def __init__(self, player_data,deckCount,minStake):
         
+        self.playing = True
         self.rank = ["Ace", 2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King"]
         self.suits = ["Hearts", "Diamonds", "Spades", "Clubs"]
         
@@ -37,12 +39,18 @@ class Game:
     def end_turn(self):
         for player in self.players:
             if player.hand_value() > self.dealer.hand_value():
-                player.money += player.bet
+                player.money += player.bet*2
                 player.wins +=1
                 print(f"{player.name} won £{player.bet}")
+            elif player.hand_value() > self.dealer.hand_value():
+                player.money += player.bet
+                print(f"{player.name} tied")
             else:
                 print(f"{player.name} lost £{player.bet}")
                 player.money -= player.bet
+                if player.money <game.minStake:
+                    print()
+                    end_game()
             print(f"{player.name} has £{player.money}")
                 
         for player in self.players:
@@ -81,16 +89,20 @@ class Game:
         self.end_turn()
             
         
-
+def end_game():
+    for player in game.players:
+        print(f"{player.name}: final moneys {player.money}, wins: {player.wins}")
+    game.playing = False
 
 if __name__ == "__main__":
     game = Game([
-        ("Dave", 500),
-        ("John", 500)
+        ("Dave", 1000),
+        ("John", 1000)
     ],6,15)
-    for i in range(10):
-        game.new_turn()
-        print(f"Game: {i}")
+    for i in range(10000):
+        if game.playing:
+            game.new_turn()
+            print(f"Game: {i}")
     
-    for player in game.players:
-        print(f"{player.name}: final moneys {player.money}, wins: {player.wins}")
+    end_game()
+    

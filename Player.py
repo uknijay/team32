@@ -70,18 +70,26 @@ class Player(ABC):
         print(f"{card[0]} of {card[1]}")
             
     def hand_value(self):
-        v = 0
+        total = 0
+        aces = 0
+
         for card in self.hand:
-            v += self.game.value(card)
-        if v<=21:
-            return v
-        else:
-            for card in self.hand:
-                if card[0] == "Ace":
-                    card[0] = 1
-                    return v - 10
+            val = self.game.value(card)
+            total += val
+            if card[0] == "Ace":
+                aces += 1
+
+        # Reduce total by 10 for as many Aces as needed to stay <=21
+        while total > 21 and aces > 0:
+            total -= 10
+            aces -= 1
+
+        if total > 21:
             self.bust = True
             return 0
+
+        return total
+
     
     def get_card(self, n):
         drawn = []
