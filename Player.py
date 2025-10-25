@@ -11,6 +11,7 @@ class Player(ABC):
         self.name = name
         self.money = money
         self.game = game
+        self.bust = False
         self.map = {
             # --- Lowest possible total ---
             4:  {2:'H',3:'H',4:'H',5:'H',6:'H',7:'H',8:'H',9:'H',10:'H','A':'H',11:'H'},
@@ -46,15 +47,19 @@ class Player(ABC):
         print(f"{self.name}: Hit!")
         self.get_card(1)
         v = self.hand_value()
-        if v<21 and v!=0:
+        if v == 0:
+            print(f"{self.name} went bust")
+        elif v<21:
             self.decide_move()
     
     def stand(self):
         print(f"{self.name}: Stand!")
     
     def double(self):
-        print(f"{self.name}: Double!")
-        self.bet *= 2
+        if len(self.hand) <= 2:
+            print(f"{self.name}: Double!")
+            self.bet *= 2
+            print(f"{self.name}: Doubled their bet to {self.bet}")
         self.hit()
     
     def leave(self):
@@ -74,7 +79,7 @@ class Player(ABC):
                 if card[0] == "Ace":
                     card[0] = 1
                     return v - 10
-            print(f"{self.name} went bust")
+            self.bust = True
             return 0
     
     def get_card(self, n):

@@ -1,7 +1,6 @@
 import random
 from itertools import product
 from Dealer import Dealer
-from Strategy import HiLo  
 from wong_halves import WongHalves
 
 class Game:
@@ -35,18 +34,35 @@ class Game:
             
     
     
-    # def end_turn(self):
-    #     for player in self.players:
-    #         if player.game.hand_value() > self.dealer.
+    def end_turn(self):
+        for player in self.players:
+            if player.hand_value() > self.dealer.hand_value():
+                player.money += player.bet
+                print(f"{player.name} won £{player.bet}")
+            else:
+                print(f"{player.name} lost £{player.bet}")
+                player.money -= player.bet
+                
+        for player in self.players:
+            print(f"{player.name}: {player.hand}")
+        print(f"{self.dealer.name}: {self.dealer.hand}")
             
     
     def new_turn(self):
         if len(self.cards) < self.deckCount*52*0.25:
             for player in self.players:
                 player.count = 0
+            self.cards = self.shuffle()
                  
+        self.dealer.hand = []
+        self.dealer.bust = False
         for player in self.players:
+            player.bust = False
+            player.bet = 0
+            player.hand = []
             player.stake()
+            print(f"{player.name} staked {player.bet}")
+        
             
         for player in self.players:
             player.get_card(2)
@@ -55,9 +71,14 @@ class Game:
         
         for player in self.players:
             player.decide_move()
+        
+        if not all(player.bust == True for player in self.players):
+            self.dealer.get_card(1)
+            self.dealer.decide_move()
+        
+        self.end_turn()
             
-        self.dealer.get_card(1)
-        self.dealer.decide_move()
+        
 
 
 if __name__ == "__main__":
@@ -65,4 +86,9 @@ if __name__ == "__main__":
         ("Dave", 500),
         ("John", 500)
     ],6,15)
-    game.new_turn()
+    for i in range(100):
+        game.new_turn()
+        print(f"Game: {i}")
+    
+    for player in game.players:
+        print(f"{player.name}: final moneys {player.money}")
