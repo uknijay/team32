@@ -38,10 +38,12 @@ class Game:
         for player in self.players:
             if player.hand_value() > self.dealer.hand_value():
                 player.money += player.bet
+                player.wins +=1
                 print(f"{player.name} won £{player.bet}")
             else:
                 print(f"{player.name} lost £{player.bet}")
                 player.money -= player.bet
+            print(f"{player.name} has £{player.money}")
                 
         for player in self.players:
             print(f"{player.name}: {player.hand}")
@@ -86,9 +88,9 @@ if __name__ == "__main__":
         ("Dave", 500),
         ("John", 500)
     ],6,15)
-    for i in range(100):
+    for i in range(10):
         game.new_turn()
         print(f"Game: {i}")
     
     for player in game.players:
-        print(f"{player.name}: final moneys {player.money}")
+        print(f"{player.name}: final moneys {player.money}, wins: {player.wins}")

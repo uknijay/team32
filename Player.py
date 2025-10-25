@@ -12,6 +12,7 @@ class Player(ABC):
         self.money = money
         self.game = game
         self.bust = False
+        self.wins = 0
         self.map = {
             # --- Lowest possible total ---
             4:  {2:'H',3:'H',4:'H',5:'H',6:'H',7:'H',8:'H',9:'H',10:'H','A':'H',11:'H'},
