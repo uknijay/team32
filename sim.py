@@ -43,7 +43,7 @@ class Game:
                 player.money += player.bet*2
                 player.wins +=1
                 print(f"{player.name} won £{player.bet}")
-            elif player.hand_value() > self.dealer.hand_value():
+            elif player.hand_value() == self.dealer.hand_value():
                 player.money += player.bet
                 print(f"{player.name} tied")
             else:
@@ -73,7 +73,7 @@ class Game:
             player.hand = []
             player.stake()
             print(f"{player.name} staked {player.bet}")
-            player.money - player.bet
+            player.money -= player.bet
         
             
         for player in self.players:

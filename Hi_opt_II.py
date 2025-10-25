@@ -26,8 +26,7 @@ class Hi_Opt_II(Strategy):
             self.ace_count += 1
 
     def calc_true_count(self):
-        self.true_count_play = round(self.count / (len(self.game.cards) / 52))
-        self.true_count_bet = round((self.count + ((self.total_ace * ((self.total_cards - len(self.game.cards)) / self.total_cards))- self.ace_count))/(len(self.game.cards) / 52))
+        (self.count + ((self.total_ace * ((self.total_cards - len(self.game.cards)) / self.total_cards))- self.ace_count))
 
     def stake(self):
         if self.true_count_bet <= 0:
@@ -40,8 +39,9 @@ class Hi_Opt_II(Strategy):
             bet = 8
         elif self.true_count_bet > 3:
             bet = 12
-        # apply bet to player state if needed
+        
         bet*=self.game.minStake
+        bet = max(self.game.minStake, min(bet, self.money // 5))
         self.bet = bet
 
     def decide_move(self):

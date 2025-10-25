@@ -45,7 +45,6 @@ class WongHalves(Strategy):
 
         # ensure bet is at least minStake, and at most 20% of bankroll
         bet = max(self.game.minStake, min(bet, self.money // 5))
-
         self.bet = bet
 
 
