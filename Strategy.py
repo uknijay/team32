@@ -22,12 +22,12 @@ class Strategy(Player, ABC):
 class HiLo(Strategy):
     def __init__(self, name, money):
         super().__init__(name, money)
-        
-    def calcBet():
-        return
-    
+           
     def decide_move():
         pass
     
     def addCount(self,value):
+        pass
+    
+    def stake():
         pass

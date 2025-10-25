@@ -8,6 +8,9 @@ class Dealer(Strategy):
     def calcBet():
         pass
     
+    def stake():
+        pass
+    
     def addCount(value):
         return
     
@@ -15,8 +18,5 @@ class Dealer(Strategy):
         v = 0
         for card in self.hand:
             v+=self.value(card)
-        
         if v<17:
             self.hit()
-        else:
-            self.stand()
