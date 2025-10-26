@@ -36,33 +36,36 @@ class Player(ABC):
                 }
     
     def hit(self):
-        print(f"{self.name}: Hit!")
+        # print(f"{self.name}: Hit!")
         self.get_card(1)
         v = self.hand_value()
         if v == 0:
-            print(f"{self.name} went bust")
+            # print(f"{self.name} went bust")
+            pass
         elif v<21:
             self.decide_move()
     
     def stand(self):
-        print(f"{self.name}: Stand!")
+        # print(f"{self.name}: Stand!")
+        pass
     
     def double(self):
         if len(self.hand) <= 2 and self.money>self.bet:
-            print(f"{self.name}: Double!")
+            # print(f"{self.name}: Double!")
             self.money -= self.bet
             self.bet *= 2
-            print(f"{self.name}: Doubled their bet to {self.bet}")
+            # print(f"{self.name}: Doubled their bet to {self.bet}")
             self.get_card(1)
         else:
             self.hit()
     
     def leave(self):
-        print(f"{self.name} left the table")
+        # print(f"{self.name} left the table")
         self.game.players.remove(self)
         
     def print_card(self,card):
-        print(f"{card[0]} of {card[1]}")
+        # print(f"{card[0]} of {card[1]}")
+        pass
             
     def hand_value(self):
         total = 0
@@ -93,8 +96,8 @@ class Player(ABC):
             for player in self.game.players:
                 player.addCount(self.game.value(card))
             drawn.append(card)
-            print(f"{self.name} drew a ",end="")
-            self.print_card(card)
+            # print(f"{self.name} drew a ",end="")
+            # self.print_card(card)
         self.hand.extend(drawn)
     
     @abstractmethod

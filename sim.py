@@ -4,6 +4,7 @@ from Dealer import Dealer
 from hilo import HiLo
 from wong_halves import WongHalves
 from Hi_opt_II import Hi_Opt_II
+import matplotlib.pyplot as plt
 
 class Game:
     def __init__(self, player_data,deckCount,minStake):
@@ -12,12 +13,10 @@ class Game:
         self.rank = ["Ace", 2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King"]
         self.suits = ["Hearts", "Diamonds", "Spades", "Clubs"]
 
-        # Initialize deck configuration and shuffle before creating players
         self.deckCount = deckCount
         self.minStake = minStake
         self.cards = self.shuffle()
 
-        # Now create players and dealer who rely on game.cards
         self.players = [fn(name, money, self) for fn,name, money in player_data]
         self.startingPlayers = self.players.copy()
         self.dealer = Dealer("Dealer", 0, self)
@@ -41,28 +40,28 @@ class Game:
     
     def end_turn(self):
         for player in self.players:
-            player.games += 1
             if player.hand_value() < self.dealer.hand_value() or player.bust:
-                print(f"{player.name} lost £{player.bet}")
+                # print(f"{player.name} lost £{player.bet}")
                 if player.money < self.minStake:
-                    print(f"{player.name} went broke!")
+                    # print(f"{player.name} went broke!")
                     self.players.remove(player)
-                    print(self.players)
+                    # print(self.players)
                     if len(self.players)==0:
-                        end_game()
+                        game.playing = False
             elif player.hand_value() > self.dealer.hand_value():
                 player.money += player.bet*2
                 player.wins +=1
-                print(f"{player.name} won £{player.bet}")
+                # print(f"{player.name} won £{player.bet}")
             else:
                 player.money += player.bet
-                print(f"{player.name} tied")
+                # print(f"{player.name} tied")
                 
-            print(f"{player.name} has £{player.money}")
+            # print(f"{player.name} has £{player.money}")
                 
         for player in self.players:
-            print(f"{player.name}: {player.hand}")
-        print(f"{self.dealer.name}: {self.dealer.hand}")
+            player.games += 1
+            # print(f"{player.name}: {player.hand}")
+        # print(f"{self.dealer.name}: {self.dealer.hand}")
             
     
     def new_turn(self):
@@ -78,7 +77,7 @@ class Game:
             player.bet = 0
             player.hand = []
             player.stake()
-            print(f"{player.name} staked {player.bet}")
+            # print(f"{player.name} staked {player.bet}")
             player.money -= player.bet
         
             
@@ -103,14 +102,30 @@ def end_game():
     game.playing = False
 
 if __name__ == "__main__":
+    starting_money = 1500
+    decks = 6
+    minimum_bet = 15
     game = Game([
-        (HiLo,"Dave", 1000),
-        (Hi_Opt_II,"John", 1000)
-    ],6,15)
-    for i in range(100000):
+        (WongHalves,"Dave", starting_money),
+        (Hi_Opt_II,"John", starting_money),
+        (HiLo,"Derek",starting_money)
+    ],decks,minimum_bet)
+    
+    data = [[starting_money],[starting_money],[starting_money]]
+    for i in range(1000):
         if game.playing:
             game.new_turn()
-            print(f"Game: {i}")
-    
+            for i,player in enumerate(game.startingPlayers):
+                data[i].append(player.money)
+            # print(f"Game: {i}")
+        else:
+            break
     end_game()
+    # print(data)
+    
+    turns = [i for i in range(len(data[0]))]
+    for i in range(len(data)):
+        plt.plot(turns,data[i])
+        
+    plt.show()
     
