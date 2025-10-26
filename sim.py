@@ -1,6 +1,7 @@
 import random
 from itertools import product
 from Dealer import Dealer
+from hilo import HiLo
 from wong_halves import WongHalves
 from Hi_opt_II import Hi_Opt_II
 
@@ -103,10 +104,10 @@ def end_game():
 
 if __name__ == "__main__":
     game = Game([
-        (WongHalves,"Dave", 1000),
+        (HiLo,"Dave", 1000),
         (Hi_Opt_II,"John", 1000)
     ],6,15)
-    for i in range(1000):
+    for i in range(100000):
         if game.playing:
             game.new_turn()
             print(f"Game: {i}")
