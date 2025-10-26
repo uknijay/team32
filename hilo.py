@@ -38,16 +38,13 @@ class HiLo(Strategy):
             5: self.game.minStake * 6,
         }
 
-
         decks_remaining = max(1, len(self.game.cards) / 52)
         true_count = self.count / decks_remaining
-
 
         if true_count <= 0:
             bet = self.game.minStake
         else:
             bet = self.betRamp.get(int(true_count), self.game.minStake * 8)
-
 
         bet = max(self.game.minStake, min(bet, self.money // 5))
         self.bet = bet
