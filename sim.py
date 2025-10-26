@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 class Game:
-    def __init__(self, player_data,deckCount,minStake):
+    def __init__(self, player_data,deckCount,minStake,bankroll):
         
         self.playing = True
         self.rank = ["Ace", 2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King"]
@@ -18,7 +18,7 @@ class Game:
         self.minStake = minStake
         self.cards = self.shuffle()
 
-        self.players = [fn(name, money, self) for fn,name, money in player_data]
+        self.players = [fn(name, bankroll, self) for fn,name, in player_data]
         self.starting_players = self.players.copy()
         self.dealer = Dealer("Dealer", 0, self)
         self.game_state = []
@@ -100,13 +100,8 @@ class Game:
             
 
 
-def new_sim(simulations,rounds,starting_money, minimum_bet):
+def new_sim(simulations,rounds,starting_money, minimum_bet, player_list):
     shoe_shize = 6
-    player_list = [
-        (WongHalves,"Dave", starting_money),
-        (Hi_Opt_II,"John", starting_money),
-        (HiLo,"Derek",starting_money)
-    ]
     
     mean_data = [[0 for _ in range(rounds)] for _ in range(len(player_list))]
     all_data = [[] for _ in range(len(player_list))]
@@ -116,7 +111,7 @@ def new_sim(simulations,rounds,starting_money, minimum_bet):
         i[0] = starting_money
     
     for j in range(simulations):
-        game = Game(player_list,shoe_shize,minimum_bet)
+        game = Game(player_list,shoe_shize,minimum_bet,starting_money)
         sim_data = [[] for _ in range(len(player_list))]
         
         for i in range(1,rounds):
@@ -147,5 +142,9 @@ def new_sim(simulations,rounds,starting_money, minimum_bet):
     plt.legend()
     plt.show()
 
-new_sim(100,5000,5000,10)
+new_sim(100,5000,5000,10,[
+        (WongHalves,"Dave"),
+        (Hi_Opt_II,"John"),
+        (HiLo,"Derek")
+    ])
     
