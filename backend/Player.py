@@ -14,6 +14,7 @@ class Player(ABC):
         self.bust = False
         self.wins = 0
         self.games = 0
+        self.cap = 20
         self.map = {
                     4: {2:'H',3:'H',4:'H',5:'H',6:'H',7:'H',8:'H',9:'H',10:'H',11:'H'},
                     5: {2:'H',3:'H',4:'H',5:'H',6:'H',7:'H',8:'H',9:'H',10:'H',11:'H'},

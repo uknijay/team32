@@ -19,8 +19,6 @@ class WongHalves(Strategy):
             11: -1.0,
         }
         self.count = 0
-    
-
 
     def addCount(self, value):
         self.count += self.tags[value]
@@ -31,9 +29,9 @@ class WongHalves(Strategy):
             0: self.game.minStake,         # 15
             1: self.game.minStake * 2,     # 30
             2: self.game.minStake * 3,     # 45
-            3: self.game.minStake * 4,     # 60
-            4: self.game.minStake * 5,     # 75
-            5: self.game.minStake * 6,     # 90, optional max cap
+            3: self.game.minStake * 5,     # 60
+            4: self.game.minStake * 6,     # 75
+            5: self.game.minStake * 8,     # 90, optional max cap
         }
 
         true_count = self.count / (len(self.game.cards) / 52)
@@ -41,10 +39,10 @@ class WongHalves(Strategy):
         if true_count <= 0:
             bet = self.game.minStake
         else:
-            bet = self.betRamp.get(int(true_count), self.game.minStake * 12)
+            bet = self.betRamp.get(int(true_count), self.game.minStake * 8)
 
         # ensure bet is at least minStake, and at most 20% of bankroll
-        bet = max(self.game.minStake, min(bet, self.money // 5))
+        bet = max(self.game.minStake, min(bet, self.money // self.cap))
         self.bet = bet
 
 
