@@ -19,8 +19,6 @@ class WongHalves(Strategy):
             11: -1.0,
         }
         self.count = 0
-    
-
 
     def addCount(self, value):
         self.count += self.tags[value]

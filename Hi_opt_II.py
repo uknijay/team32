@@ -12,7 +12,7 @@ class Hi_Opt_II(Strategy):
         self.ace_count = 0
         self.total_ace = len(self.game.cards) / 13
         self.total_cards = len(self.game.cards)
-
+        
     def addCount(self, value):
         if value in [2,3,6,7]:
             self.count += 1

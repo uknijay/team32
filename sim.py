@@ -97,35 +97,44 @@ class Game:
             
         
 def end_game():
-    for player in game.startingPlayers:
-        print(f"{player.name}: final moneys {player.money}, wins: {player.wins} out of {player.games} games")
+    # for player in game.startingPlayers:
+    #     print(f"{player.name}: final moneys {player.money}, wins: {player.wins} out of {player.games} games")
     game.playing = False
 
 if __name__ == "__main__":
     starting_money = 1500
     decks = 6
     minimum_bet = 15
-    game = Game([
+    player_list = [
         (WongHalves,"Dave", starting_money),
         (Hi_Opt_II,"John", starting_money),
         (HiLo,"Derek",starting_money)
-    ],decks,minimum_bet)
+    ]
     
-    data = [[starting_money],[starting_money],[starting_money]]
-    for i in range(1000):
-        if game.playing:
-            game.new_turn()
-            for i,player in enumerate(game.startingPlayers):
-                data[i].append(player.money)
-            # print(f"Game: {i}")
-        else:
-            break
-    end_game()
-    # print(data)
+    simulations = 500
+    simulation_length = 10000
+    
+    max = 0
+    
+    data = [[i for i in range(simulation_length)] for _ in range(len(player_list))]
+ 
+    for i in data:
+        i[0] = starting_money
+    
+    for j in range(simulations):
+        game = Game(player_list,decks,minimum_bet)
+        for i in range(1,simulation_length):
+            if game.playing:
+                game.new_turn()
+            for n,player in enumerate(game.startingPlayers):
+                    data[n][i]+=(player.money)/simulations
+        end_game()
     
     turns = [i for i in range(len(data[0]))]
     for i in range(len(data)):
-        plt.plot(turns,data[i])
+        plt.plot(turns,data[i],label = player_list[i][0].__name__)
         
+    plt.legend()
     plt.show()
+
     
