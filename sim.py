@@ -5,6 +5,7 @@ from hilo import HiLo
 from wong_halves import WongHalves
 from Hi_opt_II import Hi_Opt_II
 import matplotlib.pyplot as plt
+import numpy as np
 
 class Game:
     def __init__(self, player_data,deckCount,minStake):
@@ -18,7 +19,7 @@ class Game:
         self.cards = self.shuffle()
 
         self.players = [fn(name, money, self) for fn,name, money in player_data]
-        self.startingPlayers = self.players.copy()
+        self.starting_players = self.players.copy()
         self.dealer = Dealer("Dealer", 0, self)
         self.game_state = []
         
@@ -36,32 +37,35 @@ class Game:
         else:
             return 10
             
-    
-    
     def end_turn(self):
+        dealer_val = self.dealer.hand_value()
+        losers = []
         for player in self.players:
-            if player.hand_value() < self.dealer.hand_value() or player.bust:
-                # print(f"{player.name} lost £{player.bet}")
+            player_val = player.hand_value()
+            
+            if player_val < dealer_val or player.bust:
+                
                 if player.money < self.minStake:
-                    # print(f"{player.name} went broke!")
-                    self.players.remove(player)
-                    # print(self.players)
+                    losers.append(player)
                     if len(self.players)==0:
-                        game.playing = False
-            elif player.hand_value() > self.dealer.hand_value():
-                player.money += player.bet*2
+                        self.playing = False
+                        
+            elif player_val > dealer_val:
+                
+                if player_val == 21 and len(player.hand) == 2:
+                    player.money += player.bet*2.5
+                else:
+                    player.money += player.bet*2
                 player.wins +=1
-                # print(f"{player.name} won £{player.bet}")
+                
             else:
                 player.money += player.bet
-                # print(f"{player.name} tied")
-                
-            # print(f"{player.name} has £{player.money}")
                 
         for player in self.players:
             player.games += 1
-            # print(f"{player.name}: {player.hand}")
-        # print(f"{self.dealer.name}: {self.dealer.hand}")
+        
+        for player in losers:
+            self.players.remove(player)
             
     
     def new_turn(self):
@@ -77,7 +81,6 @@ class Game:
             player.bet = 0
             player.hand = []
             player.stake()
-            # print(f"{player.name} staked {player.bet}")
             player.money -= player.bet
         
             
@@ -95,46 +98,54 @@ class Game:
         
         self.end_turn()
             
-        
-def end_game():
-    # for player in game.startingPlayers:
-    #     print(f"{player.name}: final moneys {player.money}, wins: {player.wins} out of {player.games} games")
-    game.playing = False
 
-if __name__ == "__main__":
-    starting_money = 1500
-    decks = 6
-    minimum_bet = 15
+
+def new_sim(simulations,rounds,starting_money, minimum_bet):
+    shoe_shize = 6
     player_list = [
         (WongHalves,"Dave", starting_money),
         (Hi_Opt_II,"John", starting_money),
         (HiLo,"Derek",starting_money)
     ]
     
-    simulations = 500
-    simulation_length = 10000
+    mean_data = [[0 for _ in range(rounds)] for _ in range(len(player_list))]
+    all_data = [[] for _ in range(len(player_list))]
     
-    max = 0
-    
-    data = [[i for i in range(simulation_length)] for _ in range(len(player_list))]
- 
-    for i in data:
+
+    for i in mean_data:
         i[0] = starting_money
     
     for j in range(simulations):
-        game = Game(player_list,decks,minimum_bet)
-        for i in range(1,simulation_length):
+        game = Game(player_list,shoe_shize,minimum_bet)
+        sim_data = [[] for _ in range(len(player_list))]
+        
+        for i in range(1,rounds):
             if game.playing:
                 game.new_turn()
-            for n,player in enumerate(game.startingPlayers):
-                    data[n][i]+=(player.money)/simulations
-        end_game()
-    
-    turns = [i for i in range(len(data[0]))]
-    for i in range(len(data)):
-        plt.plot(turns,data[i],label = player_list[i][0].__name__)
+            for n,player in enumerate(game.starting_players):
+                mean_data[n][i]+=(player.money)/simulations
+                sim_data[n].append(player.money)
+                
+        for n in range(len(player_list)):
+            all_data[n].append(sim_data[n])
+        
+        
+    turns = np.arange(rounds-1)
+    for n in range(len(player_list)):
+        arr = np.array(all_data[n])
+        median = np.median(arr, axis=0)
+        p25 = np.percentile(arr, 25, axis=0)
+        p75 = np.percentile(arr, 75, axis=0)
+        
+        plt.plot(turns, median, label=player_list[n][0].__name__)
+        plt.fill_between(turns, p25, p75, alpha=0.2)
+        
+    # turns = [i for i in range(len(mean_data[0]))]
+    # for i in range(len(mean_data)):
+    #     plt.plot(turns,mean_data[i],label = player_list[i][0].__name__)
         
     plt.legend()
     plt.show()
 
+new_sim(100,5000,5000,10)
     

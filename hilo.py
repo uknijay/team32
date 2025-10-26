@@ -44,9 +44,9 @@ class HiLo(Strategy):
         if true_count <= 0:
             bet = self.game.minStake
         else:
-            bet = self.betRamp.get(int(true_count), self.game.minStake * 8)
+            bet = self.betRamp.get(int(true_count), self.game.minStake * 6)
 
-        bet = max(self.game.minStake, min(bet, self.money // 5))
+        bet = max(self.game.minStake, min(bet, self.money // self.cap))
         self.bet = bet
 
 
