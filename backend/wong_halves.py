@@ -19,6 +19,7 @@ class WongHalves(Strategy):
             11: -1.0,
         }
         self.count = 0
+        self.total_ace = 0
 
     def addCount(self, value):
         self.count += self.tags[value]
@@ -55,7 +56,7 @@ class WongHalves(Strategy):
         if action == 'H':
             self.hit()
         elif action == 'S':
-            self.stand()
+            pass
         elif action == 'D':
             self.double()
     

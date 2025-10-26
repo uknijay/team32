@@ -19,6 +19,7 @@ class HiLo(Strategy):
             11: -1,  
         }
         self.count = 0
+        self.total_ace = 0
 
 
     def addCount(self, value):
@@ -59,6 +60,6 @@ class HiLo(Strategy):
         if action == 'H':
             self.hit()
         elif action == 'S':
-            self.stand()
+            pass
         elif action == 'D':
             self.double()

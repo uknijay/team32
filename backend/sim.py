@@ -72,6 +72,7 @@ class Game:
         if len(self.cards) < self.deckCount*52*0.25:
             for player in self.players:
                 player.count = 0
+                player.total_ace = 6*4
             self.cards = self.shuffle()
                  
         self.dealer.hand = []
@@ -135,16 +136,16 @@ def new_sim(simulations,rounds,starting_money, minimum_bet, player_list):
         plt.plot(turns, median, label=player_list[n][0].__name__)
         plt.fill_between(turns, p25, p75, alpha=0.2)
         
-    # turns = [i for i in range(len(mean_data[0]))]
-    # for i in range(len(mean_data)):
-    #     plt.plot(turns,mean_data[i],label = player_list[i][0].__name__)
+    turns = [i for i in range(len(mean_data[0]))]
+    for i in range(len(mean_data)):
+        plt.plot(turns,mean_data[i],label = player_list[i][0].__name__)
         
     plt.legend()
     plt.show()
 
-new_sim(100,5000,5000,10,[
+new_sim(100,10000,5000,10,[
         (WongHalves,"Dave"),
         (Hi_Opt_II,"John"),
         (HiLo,"Derek")
-    ])
+    ])  
     
