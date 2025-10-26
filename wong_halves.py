@@ -41,7 +41,7 @@ class WongHalves(Strategy):
         if true_count <= 0:
             bet = self.game.minStake
         else:
-            bet = self.betRamp.get(true_count, self.game.minStake * 12)
+            bet = self.betRamp.get(int(true_count), self.game.minStake * 12)
 
         # ensure bet is at least minStake, and at most 20% of bankroll
         bet = max(self.game.minStake, min(bet, self.money // 5))

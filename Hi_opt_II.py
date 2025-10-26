@@ -26,7 +26,7 @@ class Hi_Opt_II(Strategy):
             self.ace_count += 1
 
     def calc_true_count(self):
-        self.true_count_bet = (self.count + ((self.total_ace * ((self.total_cards - len(self.game.cards)) / self.total_cards))- self.ace_count))
+        self.true_count_bet = int(self.count + ((self.total_ace * ((self.total_cards - len(self.game.cards)) / self.total_cards))- self.ace_count))
 
     def stake(self):
         self.calc_true_count()

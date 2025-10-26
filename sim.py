@@ -17,7 +17,7 @@ class Game:
         self.cards = self.shuffle()
 
         # Now create players and dealer who rely on game.cards
-        self.players = [WongHalves(name, money, self) for name, money in player_data]
+        self.players = [fn(name, money, self) for fn,name, money in player_data]
         self.startingPlayers = self.players.copy()
         self.dealer = Dealer("Dealer", 0, self)
         self.game_state = []
@@ -41,14 +41,7 @@ class Game:
     def end_turn(self):
         for player in self.players:
             player.games += 1
-            if player.hand_value() > self.dealer.hand_value():
-                player.money += player.bet*2
-                player.wins +=1
-                print(f"{player.name} won £{player.bet}")
-            elif player.hand_value() == self.dealer.hand_value():
-                player.money += player.bet
-                print(f"{player.name} tied")
-            else:
+            if player.hand_value() < self.dealer.hand_value() or player.bust:
                 print(f"{player.name} lost £{player.bet}")
                 if player.money < self.minStake:
                     print(f"{player.name} went broke!")
@@ -56,6 +49,14 @@ class Game:
                     print(self.players)
                     if len(self.players)==0:
                         end_game()
+            elif player.hand_value() > self.dealer.hand_value():
+                player.money += player.bet*2
+                player.wins +=1
+                print(f"{player.name} won £{player.bet}")
+            else:
+                player.money += player.bet
+                print(f"{player.name} tied")
+                
             print(f"{player.name} has £{player.money}")
                 
         for player in self.players:
@@ -102,8 +103,8 @@ def end_game():
 
 if __name__ == "__main__":
     game = Game([
-        ("Dave", 1000),
-        ("John", 1000)
+        (WongHalves,"Dave", 1000),
+        (Hi_Opt_II,"John", 1000)
     ],6,15)
     for i in range(1000):
         if game.playing:
